@@ -3,7 +3,8 @@
 Implementation of algorithms from Bishop's book "Pattern Recognition and Machine Learning" in Julia.
 
 
-## List of Chapters
+## List of Chapters
+
 - Chapter 3: Linear Models for Regression
 - Chapter 4: Linear Models for Classification
 - Chapter 5: Neural Networks
