@@ -6,16 +6,19 @@ using LinearAlgebra
 mutable struct LinearRegression{T <: Array}
     λ::Float64
     coefs::T
+    σ::Float64
     LinearRegression{T}(λ) where T = new{T}(λ)
 end
 
 
-LinearRegression(; eltype=Float64, λ=0.) = LinearRegression{Array{eltype, 1}}(λ)
+LinearRegression(; eltype=Float64, λ=0.) = LinearRegression{Array{eltype, 2}}(λ)
 
 function fit!(lm::LinearRegression, Φ::S, y::T) where {S, T}
     if lm.λ == 0
+        N, m = size(Φ)
         w_ml = (Φ' * Φ)^-1 * Φ'* y
-        lm.coefs = Array{Float64, 1}([w_ml])
+        lm.coefs = Array{Float64, 2}(w_ml)
+        lm.σ = sqrt(sum([(y[i] - (lm.coefs' * Φ[i, :])[1])^2 for i in 1:N]) / N)
     else
         id_size = size(Φ)[2]
         I = Matrix{Float64}(I, id_size, id_size)
