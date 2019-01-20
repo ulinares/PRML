@@ -5,7 +5,7 @@ Implementation of algorithms from Bishop's book "Pattern Recognition and Machine
 
 ## List of Chapters
 
-- Chapter 3: Linear Models for Regression
+- [Chapter 3: Linear Models for Regression](https://github.com/uzielnmtz/PRML/blob/master/notebooks/Chapter3.ipynb)
 - Chapter 4: Linear Models for Classification
 - Chapter 5: Neural Networks
 - Chapter 6: Kernel Methods
