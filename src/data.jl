@@ -1,20 +1,8 @@
 using Distributions
 
-abstract type Data end
-
-struct SynData <: Data
-    h::Function
-    σ::Float64
-    μ::Float64
-end
-
-SynData(h::Function, σ::Float64) = SynData(h, σ, 0.)
-
-function make_data(d::Data, n::Int; X=false)
-    d = Normal(d.μ, d.σ)
-    if !X
-        X = rand(n)
-    end
-    y = [d.h(x) + rand(d) for x in X]
-    [X, y]
+function make_sine(N::Int; μ::Float64=0., σ::Float64=0.3)
+    d = Normal(μ, σ)
+    X = [rand() for _ in 1:N]
+    y = [sin(2π*x) + rand(d) for x in X]
+    return X, y
 end
