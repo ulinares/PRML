@@ -1,4 +1,3 @@
-module Temp
 using LinearAlgebra
 # A simple linear regression
 
@@ -41,6 +40,4 @@ function predict(lm::LinearRegression, X::T) where T <: Array
         push!(y_preds, y)
     end
     return y_preds
-end
-
 end
