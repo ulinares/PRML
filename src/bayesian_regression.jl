@@ -11,6 +11,8 @@ using LinearAlgebra
 mutable struct BayesianRegression
     mₙ::Array
     Sₙ::Array
+    β::Float64
+    α::Float64
     BayesianRegression() = new()
 end
 
@@ -34,11 +36,30 @@ function mₙ(Φ::Matrix, y::Array, Sₙ::Matrix, β::Float64)
     return β .* Sₙ * Φ' * y
 end
 
+# TODO: implement fit! method that can estimate α and β
 function fit!(bay_reg::BayesianRegression, Φ::Array, y::Array;
     α::Float64=1., β::Float64=1/0.3^2)
     bay_reg.Sₙ = Sₙ(Φ, α, β)
     bay_reg.mₙ = mₙ(Φ, y, bay_reg.Sₙ, β)
+    bay_reg.β = β
+    bay_reg.α = α
     nothing
+end
+
+function predict(bay_reg::BayesianRegression, Φ::Array; var_out::Bool=true)
+    vars = []
+    y_preds = []
+    for i in 1:size(Φ)[1]
+        y = (bay_reg.mₙ' * Φ[i, :])[1]
+        var = 1 / β + Φ[i, :]' * bay_reg.Sₙ * Φ[i, :]
+        push!(y_preds, y)
+        push!(vars, var)
+    end
+    if var_out
+        return y_preds, vars
+    else
+        return y_preds
+    end
 end
 
 
