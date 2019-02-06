@@ -14,7 +14,7 @@ function poly_expansion(X; degree::Int=2, bias::Bool=true)
 	end
     for i in 2:degree
         Φ = basis_expansion(Φ, X, x -> x^i)
-    end
+    end 
     Φ
 end
 
