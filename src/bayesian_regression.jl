@@ -1,12 +1,5 @@
-module TempBay
 using Distributions
 using LinearAlgebra
-
-#mutable struct BayesianRegression{S <: Array, T <: Array}
-#    mₙ::S
-#    Sₙ::T
-#    BayesianRegression{S, T}() where {S, T} = new()
-#end
 
 mutable struct BayesianRegression
     mₙ::Array
@@ -60,8 +53,4 @@ function predict(bay_reg::BayesianRegression, Φ::Array; var_out::Bool=true)
     else
         return y_preds
     end
-end
-
-
-
 end
