@@ -51,7 +51,7 @@ function predict(bay_reg::BayesianRegression, Φ::Array; var_out::Bool=true)
     y_preds = []
     for i in 1:size(Φ)[1]
         y = (bay_reg.mₙ' * Φ[i, :])[1]
-        var = 1 / β + Φ[i, :]' * bay_reg.Sₙ * Φ[i, :]
+        var = (1 / bay_reg.β) + Φ[i, :]' * bay_reg.Sₙ * Φ[i, :]
         push!(y_preds, y)
         push!(vars, var)
     end
