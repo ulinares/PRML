@@ -5,7 +5,7 @@ S(x, μ, s) = σ((x - μ) / s)
 G(x, μ, s) = exp(-(x - μ)^2 / (2*s^2))
 
 
-function poly_expansion(X; degree::Int=2, bias::Bool=true)
+function poly_expansion(X::Array, degree::Int=2; bias::Bool=true)
     if bias
         Φ = ones(length(X), 1)
         Φ = basis_expansion(Φ, X, x -> x)
@@ -14,12 +14,12 @@ function poly_expansion(X; degree::Int=2, bias::Bool=true)
     end
     for i in 2:degree
         Φ = basis_expansion(Φ, X, x -> x^i)
-    end 
+    end
     Φ
 end
 
-function sigmoidal_expansion(X; μs::Union{Vector, StepRangeLen},
-    s::Float64, bias::Bool=true)
+function sigmoidal_expansion(X::Array, μs::Union{Vector, StepRangeLen},
+    s::Float64; bias::Bool=true)
     if bias
         Φ = ones(length(X), 1)
         Φ = basis_expansion(Φ, X, x -> S(x, μs[1], s))
@@ -33,8 +33,8 @@ function sigmoidal_expansion(X; μs::Union{Vector, StepRangeLen},
     Φ
 end
 
-function gaussian_expansion(X; μs::Union{Vector, StepRangeLen},
-    s::Float64, bias::Bool=true)
+function gaussian_expansion(X::Array, μs::Union{Vector, StepRangeLen},
+    s::Float64; bias::Bool=true)
     if bias
         Φ = ones(length(X), 1)
         Φ = basis_expansion(Φ, X, x -> G(x, μs[1], s))
