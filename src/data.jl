@@ -11,18 +11,28 @@ end
 
 # Generate data by clases with same covariance matrix
 # TODO: generate with different covariance?
-function make_classes(N::Int; n_class::Int=2, σ²=0.25)
+function make_classes(N::Int; n_class::Int=2, σ²=0.25,
+    one_hot::Bool=true)
     X = []
-    T = []
+    t = []
+    T = zeros(n_class * N, n_class)
     μs = [rand(2) .* 5 .- 2.5 for _ in 1:n_class]
     d = [MvNormal(μ, [σ², σ²]) for μ in μs]
+
     for i in 1:n_class
         for _ in 1:N
             x = rand(d[i])
-            t = zeros(n_class); t[i] = 1
             push!(X, x)
-            push!(T, t)
+            push!(t, i)
         end
     end
-    return X, T
+
+    if one_hot
+        for (i, class) in enumerate(t)
+            T[i, class] = 1.
+        end
+        return X, T
+    else
+        return X, t
+    end
 end
