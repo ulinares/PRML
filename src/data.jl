@@ -13,16 +13,17 @@ end
 # TODO: generate with different covariance?
 function make_classes(N::Int; n_class::Int=2, σ²=0.25,
     one_hot::Bool=true)
-    X = []
+    X = Matrix{Float64}(undef, n_class * N, 2)
     t = []
     T = zeros(n_class * N, n_class)
     μs = [rand(2) .* 5 .- 2.5 for _ in 1:n_class]
     d = [MvNormal(μ, [σ², σ²]) for μ in μs]
 
+    # TODO: is there an elegant way to fill X matrix?
     for i in 1:n_class
-        for _ in 1:N
+        for j in 1:N
             x = rand(d[i])
-            push!(X, x)
+            X[N*(i-1) + j, :] = x
             push!(t, i)
         end
     end
