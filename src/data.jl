@@ -11,15 +11,12 @@ end
 
 # Generate data by clases with same covariance matrix
 # TODO: generate with different covariance?
-function make_classes(N::Int; n_class::Int=2, σ²=0.25,
-    one_hot::Bool=true)
+function make_classes(N::Int; n_class::Int=2, σ²=0.25)
     X = Matrix{Float64}(undef, n_class * N, 2)
     t = []
-    T = zeros(n_class * N, n_class)
     μs = [rand(2) .* 5 .- 2.5 for _ in 1:n_class]
     d = [MvNormal(μ, [σ², σ²]) for μ in μs]
 
-    # TODO: is there an elegant way to fill X matrix?
     for i in 1:n_class
         for j in 1:N
             x = rand(d[i])
@@ -27,13 +24,16 @@ function make_classes(N::Int; n_class::Int=2, σ²=0.25,
             push!(t, i)
         end
     end
+    return X, t
+end
 
-    if one_hot
-        for (i, class) in enumerate(t)
-            T[i, class] = 1.
-        end
-        return X, T
-    else
-        return X, t
+
+function one_hot(t::Vector)
+    classes = length(unique(t))
+    N = length(t)
+    T = zeros(N, classes)
+    for (i, t_) in enumerate(t)
+        T[i, t_] = 1
     end
+    T
 end
